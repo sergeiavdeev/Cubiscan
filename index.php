@@ -1,12 +1,12 @@
 <?php
-require 'Avdeev\Quantronix\Cubiscan.php';
+require "Avdeev\Quantronix\Cubiscan.php";
 use Avdeev\Quantronix\Cubiscan;
 
 error_reporting(0);
 
-$config = include('config.php');
+$config = include("config.php");
 
-$cubiscan = new Cubiscan($config['host'], $config['port'], 1);
+$cubiscan = new Cubiscan($config["host"], $config["port"], 1);
 $result = $cubiscan->measure();
 
 header("Content-Type: application/json; charset=utf-8");
