@@ -2,6 +2,11 @@
 
 namespace Avdeev\Quantronix;
 
+/**
+ * @author avdeev.sa
+ * Cubiscan Ethernet API
+ *
+ */
 class Cubiscan{
     
     private $ip;
@@ -11,7 +16,13 @@ class Cubiscan{
     private $measureMsgLength;
     private $errors;
     private $timeout;
-            
+    
+    /**
+     * 
+     * @param string $ip
+     * @param number $port
+     * @param number $timout deault value 5s
+     */
     function __construct($ip, $port, $timout = 5) {
         
         $this->ip = $ip;
@@ -27,6 +38,18 @@ class Cubiscan{
         }
     }
     
+    /**
+     * 
+     * @return array (
+     *     'isError' => boolean, 
+     *     'errors' => array(string),
+     *     'data' => array(
+     *         'length' => float, 
+     *         'width' => float, 
+     *         'height' => float, 
+     *         'weight' => float,
+     *         'dimWeight' => float))
+     */
     public function measure() {
         
         $result = Array("isError" => true, 
@@ -44,14 +67,14 @@ class Cubiscan{
             if($err === SOCKET_EISCONN) {                
                 break;
             }
-                        
+                                    
             if ((time() - $time) >= $this->timeout) {
                 
                 $res = false;
                 break;
             }
                         
-            usleep(100000);
+            usleep(1000);
         }
         
         socket_set_block($this->socket);
@@ -61,17 +84,17 @@ class Cubiscan{
             $res= socket_write($this->socket, $this->measureMsg, $this->measureMsgLength);
             if ($res !== false) {
                 
-                $res= socket_read($socket, 128, PHP_NORMAL_READ);
+                $res= socket_read($this->socket, 128, PHP_NORMAL_READ);
                 
                 if ($res !== false) {
                     
                     $result["data"] = Array(
-                        "length" => (float)substr($out, 12, 5),
-                        "width" => (float)substr($out, 19, 5),
-                        "height" => (float)substr($out, 26, 5),
-                        "weight" => (float)substr($out, 35, 6),
-                        "dimWeight" => (float)substr($out, 43, 6),
-                        "volWeight" => (float)substr($out, 43, 6)
+                        "length" => (float)substr($res, 12, 5),
+                        "width" => (float)substr($res, 19, 5),
+                        "height" => (float)substr($res, 26, 5),
+                        "weight" => (float)substr($res, 35, 6),
+                        "dimWeight" => (float)substr($res, 43, 6),
+                        "volWeight" => (float)substr($res, 43, 6)
                         );
                     
                     $result["isError"] = false;
