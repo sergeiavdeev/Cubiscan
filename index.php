@@ -1,5 +1,5 @@
 <?php
-require_once 'Avdeev\Quantronix\Cubiscan.php';
+require 'Avdeev\Quantronix\Cubiscan.php';
 use Avdeev\Quantronix\Cubiscan;
 
 error_reporting(0);
