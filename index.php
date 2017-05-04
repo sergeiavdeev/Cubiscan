@@ -1,14 +1,12 @@
 <?php
 require_once 'Avdeev\Quantronix\Cubiscan.php';
-
 use Avdeev\Quantronix\Cubiscan;
 
 error_reporting(0);
 
-$ip = "10.0.37.3";
-$port = 1050;
+$config = include('config.php');
 
-$cubiscan = new Cubiscan($ip, $port, 2);
+$cubiscan = new Cubiscan($config['host'], $config['port'], 1);
 $result = $cubiscan->measure();
 
 header("Content-Type: application/json; charset=utf-8");
